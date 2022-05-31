@@ -2,9 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-import threading
-
 from .data import UserGroup
+from .expense_calculator import minCashFlow
 
 groups = []
 
@@ -115,13 +114,71 @@ class ExpenseTracker(APIView):
 
 class GroupTracker(APIView):
 
-    def get(self, request):
-        data = request.POST
-        return Response({"msg ": "Get user details"}, status=status.HTTP_200_OK)
+    def get(self, request, group_name):
+
+        for group in groups:
+            if group.name == group_name:
+
+                if not group.expenses:
+                    return Response({"method ": "No expense in group."}, status=status.HTTP_404_NOT_FOUND)
+
+                members = list(group.members)
+                graph = [[0 for x in range(len(members))] for y in range(len(members))]
+                debt = [[0 for x in range(len(members))] for y in range(len(members))]
+                balances = {}
+
+                for expense in group.expenses:
+                    for item in expense["items"]:
+                        paid_by = item["paid_by"][0].copy()
+                        owed_by = item["owed_by"][0].copy()
+
+                        for key1, value1 in paid_by.items():
+                            for key, value in owed_by.items():
+                                if owed_by[key]:
+                                    mn = min(value1, value)
+                                    paid_by[key1] -= mn
+                                    owed_by[key] -= mn
+
+                                    if not key1 == key:
+                                        graph[members.index(key)][members.index(key1)] += mn
+
+                                    if not paid_by[key1]:
+                                        break
+
+                    minCashFlow(graph, len(members), debt)
+
+                    for i in range(len(members)):
+                        total = 0
+                        owes_to = []
+                        owed_by = []
+
+                        for j in range(len(members)):
+
+                            if debt[i][j] != 0:
+                                total -= debt[i][j]
+                                owes_to.append({members[i]: debt[i][j]})
+
+                            if debt[j][i] != 0:
+                                total += debt[j][i]
+                                owed_by.append({members[i]: debt[j][i]})
+
+                        balances[members[i]] = {
+                            "total_balance": total,
+                            "owes_to": owes_to,
+                            "owed_by": owed_by
+                        }
+
+                return Response({
+                    "name": group_name,
+                    "balances": balances
+                    },
+                    status=status.HTTP_200_OK)
+
+        return Response({"method ": "Group does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
 
-        "Add new group."
+        """Add new group."""
 
         data = request.data
 

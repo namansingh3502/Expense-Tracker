@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "53aee1f9-7ccd-408b-89bb-b5885ab9758b",
+		"name": "Expense Tracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17929658"
+	},
+	"item": [
+		{
+			"name": "newGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Group2\",\n    \"members\": [\"C\", \"B\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/newGroup",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"newGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Group3",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addExpense",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Fruits and Milk\",\n    \"items\": [\n        {\"name\": \"milk\", \"value\": 50, \"paid_by\": [{\"A\": 40, \"B\": 10}], \"owed_by\": [{\"A\": 20,\"B\": 20, \"D\": 10}]}\n        ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/Group1/add",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"Group1",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateExpense",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/Group3/update",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"Group3",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteExpense",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/Group3/Fruits and Milk/delete",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"Group3",
+						"Fruits and Milk",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "groupDetails",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"A\": {\n        \"total_balance\": 50,\n        \"owes_to\": [],\n        \"owed_by\": [{\"A\": 10}, {\"A\": 40}]\n        },\n    \"C\": {\n        \"total_balance\": -10,\n        \"owes_to\": [{\"C\": 10}],\n        \"owed_by\": []\n        },\n    \"B\": {\n        \"total_balance\": -40,\n        \"owes_to\": [{\"B\": 40}],\n        \"owed_by\": []\n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/Group1/expense_detail",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"Group1",
+						"expense_detail"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
