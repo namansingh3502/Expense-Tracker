@@ -156,11 +156,11 @@ class GroupTracker(APIView):
 
                             if debt[i][j] != 0:
                                 total -= debt[i][j]
-                                owes_to.append({members[i]: debt[i][j]})
+                                owes_to.append({members[j]: debt[i][j]})
 
                             if debt[j][i] != 0:
                                 total += debt[j][i]
-                                owed_by.append({members[i]: debt[j][i]})
+                                owed_by.append({members[j]: debt[j][i]})
 
                         balances[members[i]] = {
                             "total_balance": total,
