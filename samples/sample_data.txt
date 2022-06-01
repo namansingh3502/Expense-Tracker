@@ -1,0 +1,36 @@
+API Endpoints
+
+New Group                 : api/newGroup
+Add Expense               : api/<group_name>/add
+Update Expense            : api/<group_name>/update
+Delete Expense            : api/<group_name>/<expense_name>/delete
+Group Balance Details     : api/<group_name>/balance_details
+
+
+
+New Group
+
+    {
+        "name": "Group",
+        "members": ["A", "B"]
+    }
+
+New Expense
+
+    {
+        "name": "Fruits and Milk",
+        "items": [
+            {"name": "milk", "value": 100, "paid_by": [{"A": 60, "B": 40}], "owed_by": [{"A": 30,"B": 30, "C": 40}]},
+            {"name": "fruits", "value": 50, "paid_by": [{"A": 40}], "owed_by": [{"A": 10,"B": 30, "C": 10}]}
+        ]
+    }
+
+Update Expense
+
+    {
+        "name": "Fruits and Milk",
+        "items": [
+            {"name": "milk", "value": 50, "paid_by": [{"A": 40, "B": 10}], "owed_by": [{"A": 30, "D": 20}]},
+            {"name": "fruits", "value": 50, "paid_by": [{"A": 40}], "owed_by": [{"A": 10,"B": 30, "C": 10}]}
+        ]
+    }
